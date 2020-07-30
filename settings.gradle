@@ -1,0 +1,2 @@
+rootProject.name='TestContentResolver'
+include ':app'
