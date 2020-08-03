@@ -57,8 +57,10 @@ class NewImageContentObserver(
                         |==============================
                         |New Image detected: 
                         |Metadata - $it
-                        |Current time stamp from system - $currentTime
-                        |Difference between system time and image metadata: ${(currentTime - it.timeTaken)/1000} second""".trimMargin("|")
+                        |System time ms: - $currentTime
+                        |********* This difference should be less than 5s ************
+                        |Difference: ${(currentTime - it.timeTaken)/1000} seconds
+                        |*********************""".trimMargin("|")
                         Log.v(TAG, logString)
                         callback.onUpdate(logString)
                     }
