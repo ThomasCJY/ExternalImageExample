@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.Manifest.permission;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final TextView view = findViewById(R.id.logText);
+        view.setMovementMethod(new ScrollingMovementMethod());
 
         // CHECK permission
         askForPermissionIfNeeded();
@@ -34,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                TextView view = findViewById(R.id.logText);
                                 String currentText = view.getText().toString();
                                 view.setText(currentText + "\n" + text);
                             }
