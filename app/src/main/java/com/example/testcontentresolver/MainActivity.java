@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.Manifest.permission;
+import android.widget.TextView;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -25,7 +26,21 @@ public class MainActivity extends AppCompatActivity {
         askForPermissionIfNeeded();
 
         ContentResolver contentResolver = this.getContentResolver();
-        contentObserver = new NewImageContentObserver(this.getApplicationContext());
+        contentObserver = new NewImageContentObserver(
+                this.getApplicationContext(),
+                new UpdateUiCallback() {
+                    @Override
+                    public void onUpdate(final String text) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                TextView view = findViewById(R.id.logText);
+                                String currentText = view.getText().toString();
+                                view.setText(currentText + "\n" + text);
+                            }
+                        });
+                    }
+                });
         contentResolver.registerContentObserver(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 true,

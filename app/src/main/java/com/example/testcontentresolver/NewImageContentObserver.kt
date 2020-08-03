@@ -27,7 +27,8 @@ data class ImageMetadata(
 )
 
 class NewImageContentObserver(
-        val context: Context
+        val context: Context,
+        val callback: UpdateUiCallback
 ): ContentObserver(null) {
 
     @GuardedBy("itself")
@@ -52,12 +53,14 @@ class NewImageContentObserver(
                 ).use { cursor ->
                     getImageData(cursor)?.let {
                         val currentTime = System.currentTimeMillis()
-                        Log.v(TAG, """
+                        val logString = """
                         |==============================
                         |New Image detected: 
                         |Metadata - $it
                         |Current time stamp from system - $currentTime
-                        |Difference between system time and image metadata: ${(currentTime - it.timeTaken)/1000} second""".trimMargin("|"))
+                        |Difference between system time and image metadata: ${(currentTime - it.timeTaken)/1000} second""".trimMargin("|")
+                        Log.v(TAG, logString)
+                        callback.onUpdate(logString)
                     }
                 }
             }
